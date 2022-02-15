@@ -36,10 +36,19 @@ export default function App({ Component, pageProps }: AppProps) {
           emotionOptions={{ key: "mantine", prepend: false }}
           theme={{
             colorScheme: colorScheme,
-            primaryColor: "cyan",
-            fontFamily: "Verdana, sans-serif",
+            primaryColor: "violet",
+            fontFamily: "Open Sans",
             fontFamilyMonospace: "Monaco, Courier, monospace",
-            headings: { fontFamily: "Greycliff CF, sans-serif" },
+
+            colors: {
+              brand: [],
+            },
+            headings: {
+              fontFamily: "Roboto, sans-serif",
+              sizes: {
+                h1: { fontSize: 30 },
+              },
+            },
           }}
           styles={{
             Box: {
@@ -59,13 +68,6 @@ export default function App({ Component, pageProps }: AppProps) {
                 color: colorScheme === "dark" ? "white" : "black",
               },
             },
-
-            // Container: {
-            //   root: {
-            //     paddingRight: matches ? "md" : 6,
-            //     paddingLeft: matches ? "md" : 6,
-            //   },
-            // },
           }}
           withNormalizeCSS
         >

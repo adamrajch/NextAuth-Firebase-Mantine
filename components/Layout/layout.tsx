@@ -1,6 +1,5 @@
-import Header from "./header"
 import Footer from "./footer"
-import type { ReactChildren } from "react"
+import Header from "./header"
 
 interface Props {
   children: React.ReactNode
@@ -8,10 +7,10 @@ interface Props {
 
 export default function Layout({ children }: Props) {
   return (
-    <>
+    <div style={{ padding: 16 }}>
       <Header />
       <main>{children}</main>
       <Footer />
-    </>
+    </div>
   )
 }

@@ -10,9 +10,14 @@ export default function GlobalStyle(): ReactElement {
         },
         html: {
           height: "100%",
+          width: "100%",
         },
         body: {
+          padding: 0,
+          margin: 0,
           height: "100%",
+          width: "100%",
+          minWidth: "100vw",
           minHeight: "100vh",
           backgroundColor:
             theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
