@@ -5,10 +5,11 @@ import {
 } from "@mantine/core"
 import { ModalsProvider } from "@mantine/modals"
 import { NotificationsProvider } from "@mantine/notifications"
-import { SessionProvider } from "next-auth/react"
 import type { AppProps } from "next/app"
 import Head from "next/head"
 import { useState } from "react"
+import AppLayout from "../components/Layout/AppShell"
+import { AuthProvider } from "../context/AuthContext"
 import GlobalStyle from "../styles/Global"
 import "./styles.css"
 
@@ -74,9 +75,11 @@ export default function App({ Component, pageProps }: AppProps) {
           <ModalsProvider>
             <GlobalStyle />
             <NotificationsProvider>
-              <SessionProvider session={pageProps.session} refetchInterval={0}>
-                <Component {...pageProps} />
-              </SessionProvider>
+              <AuthProvider>
+                <AppLayout>
+                  <Component {...pageProps} />
+                </AppLayout>
+              </AuthProvider>
             </NotificationsProvider>
           </ModalsProvider>
         </MantineProvider>

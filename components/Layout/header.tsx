@@ -1,9 +1,17 @@
-import { Button, Group, Image, Title } from "@mantine/core"
-import { signIn, signOut, useSession } from "next-auth/react"
+import {
+  Avatar,
+  Button,
+  Divider,
+  Group,
+  Menu,
+  Text,
+  Title,
+} from "@mantine/core"
+import Link from "next/link"
+import { useAuth } from "../../context/AuthContext"
 
 export default function Header() {
-  const { data: session, status } = useSession()
-  const loading = status === "loading"
+  const { user, signout } = useAuth()
 
   return (
     <header>
@@ -11,47 +19,49 @@ export default function Header() {
         <Title>Bloom</Title>
 
         <Group position="right">
-          <p>
-            {!session && (
-              <>
-                <Button
-                  component="a"
-                  href={`/api/auth/signin`}
-                  onClick={(e: any) => {
-                    e.preventDefault()
-                    signIn()
-                  }}
-                >
-                  Sign in
-                </Button>
-              </>
-            )}
-          </p>
-
-          {session?.user && (
+          {!user && (
             <>
-              {session.user.image && (
-                <Image
-                  src={session.user.image}
-                  alt="profile"
-                  width={25}
-                  height={25}
-                />
-              )}
-              <span>
-                <strong>{session.user.email ?? session.user.name}</strong>
-              </span>
-              <Button
-                component="a"
-                href={`/api/auth/signout`}
-                onClick={(e: any) => {
-                  e.preventDefault()
-                  signOut()
-                }}
-              >
-                Sign out
-              </Button>
+              <Link href="/login">
+                <Button>Sign in</Button>
+              </Link>
             </>
+          )}
+
+          {user && (
+            <Menu
+              control={
+                <Group style={{ cursor: "pointer" }}>
+                  <Avatar
+                    src={user.photoUrl}
+                    alt="profile"
+                    radius="xl"
+                    color="blue"
+                  />
+
+                  <span>
+                    <Text
+                      sx={(theme) => ({
+                        "@media (max-width: 755px)": {
+                          display: "none",
+                        },
+                      })}
+                    >
+                      {user.name ?? user.email}
+                    </Text>
+                  </span>
+                </Group>
+              }
+            >
+              <Menu.Item>Profile</Menu.Item>
+              <Menu.Item>My Lists</Menu.Item>
+              <Menu.Item>Settings</Menu.Item>
+
+              <Divider />
+
+              <Menu.Item color="red" onClick={signout}>
+                Sign out
+              </Menu.Item>
+            </Menu>
           )}
         </Group>
       </Group>

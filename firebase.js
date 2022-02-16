@@ -1,8 +1,7 @@
 import { initializeApp, getApps, getApp } from "firebase/app"
-import { getFirestore, Timestamp } from "firebase/firestore"
+import { getFirestore } from "firebase/firestore"
 import { getStorage } from "firebase/storage"
-import { getAuth, GoogleAuthProvider } from "firebase/auth"
-import { date } from "yup/lib/locale"
+import { getAuth } from "firebase/auth"
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,

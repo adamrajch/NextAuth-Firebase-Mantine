@@ -1,5 +1,5 @@
 import { useSession, getSession } from "next-auth/react"
-import Layout from "../components/layout"
+import Layout from "../components/Layout/layout"
 import type { NextPageContext } from "next"
 
 export default function ServerSidePage() {
