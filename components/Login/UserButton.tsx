@@ -1,14 +1,28 @@
-import { Avatar, Divider, Group, Menu, Text } from "@mantine/core"
+import { Avatar, Button, Divider, Group, Menu, Text } from "@mantine/core"
+import Link from "next/link"
 import React from "react"
 import { useAuth } from "../../context/AuthContext"
 
-type Props = {}
-
 export default function UserButton() {
   const { user, signout } = useAuth()
-  if (!user) {
-    return null
+
+  if (user === null) {
+    return (
+      <Group grow style={{ visibility: "hidden", height: 45 }}>
+        <Text>hi</Text>
+      </Group>
+    )
   }
+  if (user === false) {
+    return (
+      <Group position="center">
+        <Link href="/login">
+          <Button>Login</Button>
+        </Link>
+      </Group>
+    )
+  }
+
   return (
     <Menu
       control={
@@ -40,7 +54,22 @@ export default function UserButton() {
       <Menu.Item>Settings</Menu.Item>
 
       <Divider />
-
+      {/* <Menu.Item color="red" onClick={signout}>
+        <Button
+          leftIcon={
+            <Avatar
+              src={user.photoUrl}
+              alt="profile"
+              radius="xl"
+              color="blue"
+              size="sm"
+            />
+          }
+          variant="outline"
+        >
+          {user.name ?? user.email}
+        </Button>
+      </Menu.Item> */}
       <Menu.Item color="red" onClick={signout}>
         Sign out
       </Menu.Item>

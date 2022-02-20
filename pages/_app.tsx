@@ -37,15 +37,17 @@ export default function App({ Component, pageProps }: AppProps) {
           emotionOptions={{ key: "mantine", prepend: false }}
           theme={{
             colorScheme: colorScheme,
-            primaryColor: "violet",
+            // primaryColor: "violet",
             fontFamily: "Open Sans",
             fontFamilyMonospace: "Monaco, Courier, monospace",
 
             colors: {
               brand: [],
+              text: ["#7588a4", "#647380", "#516178"],
             },
             headings: {
               fontFamily: "Roboto, sans-serif",
+              color: colorScheme === "dark" ? "white" : "#516178",
               sizes: {
                 h1: { fontSize: 30 },
               },
@@ -57,7 +59,11 @@ export default function App({ Component, pageProps }: AppProps) {
                 width: "100%",
               },
             },
-            Text: {},
+            Text: {
+              root: {
+                color: colorScheme === "dark" ? "#a0b2c2" : "#647380",
+              },
+            },
             Group: {
               root: {
                 padding: 0,

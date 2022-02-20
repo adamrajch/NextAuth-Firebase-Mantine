@@ -1,15 +1,19 @@
 import {
   AppShell,
   Burger,
+  Container,
   Divider,
   Group,
   Header,
   MediaQuery,
   Navbar,
+  Text,
   Title,
   useMantineTheme,
 } from "@mantine/core"
+import Link from "next/link"
 import { useState } from "react"
+import { useAuth } from "../../context/AuthContext"
 import UserButton from "../Login/UserButton"
 import ColorModeSwitch from "./ColorModeSwitch"
 import NavLink from "./NavLink"
@@ -19,13 +23,14 @@ interface Props {
 export default function AppLayout({ children }: Props) {
   const [opened, setOpened] = useState(false)
   const theme = useMantineTheme()
+  const { user, loading } = useAuth()
   interface NavLink {
     href: string
     title: string
   }
   const navlinks = [
     { href: "/about", title: "about" },
-    { href: "/books", title: " books" },
+    { href: "/literature", title: " literature" },
     { href: "/movies", title: "movies" },
   ]
   return (
@@ -38,19 +43,15 @@ export default function AppLayout({ children }: Props) {
         <Navbar
           padding="md"
           // Breakpoint at which navbar will be hidden if hidden prop is true
-          hiddenBreakpoint="sm"
+          hiddenBreakpoint={2000}
           // Hides navbar when viewport size is less than value specified in hiddenBreakpoint
           hidden={!opened}
           // when viewport size is less than theme.breakpoints.sm navbar width is 100%
 
-          width={{ sm: 300 }}
+          width={{ sm: 300, md: 0, lg: 0 }}
         >
           {navlinks.map((n: NavLink, i: number) => (
-            <Navbar.Section
-              mt="lg"
-              //   grow={i === navlinks.length - 1}
-              key={n.href}
-            >
+            <Navbar.Section mt="lg" key={n.href}>
               <NavLink href={n.href} title={n.title} />
             </Navbar.Section>
           ))}
@@ -68,11 +69,21 @@ export default function AppLayout({ children }: Props) {
         </Navbar>
       }
       header={
-        <Header height={70} padding="md">
-          {/* Handle other responsive styles with MediaQuery component or createStyles function */}
+        <Header height={70} padding="md" style={{ backgroundColor: "#2b2d42" }}>
           <div
-            style={{ display: "flex", alignItems: "center", height: "100%" }}
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              height: "100%",
+            }}
           >
+            <Link href="/">
+              <Title style={{ cursor: "pointer", color: "whitesmoke" }}>
+                Bloom
+              </Title>
+            </Link>
+
             <MediaQuery largerThan="sm" styles={{ display: "none" }}>
               <Burger
                 opened={opened}
@@ -83,12 +94,61 @@ export default function AppLayout({ children }: Props) {
               />
             </MediaQuery>
 
-            <Title>Bloom</Title>
+            <MediaQuery smallerThan="lg" styles={{ display: "none" }}>
+              <Group position="right">
+                <Link href="/about">
+                  <Text
+                    size="lg"
+                    sx={{
+                      cursor: "pointer",
+                      letterSpacing: "2px",
+                      color: "whitesmoke",
+                      "&:hover": {
+                        color: "darkgray",
+                      },
+                    }}
+                  >
+                    about
+                  </Text>
+                </Link>
+                <Link href="/literature">
+                  <Text
+                    size="lg"
+                    sx={{
+                      cursor: "pointer",
+                      letterSpacing: "2px",
+                      color: "whitesmoke",
+                      "&:hover": {
+                        color: "darkgray",
+                      },
+                    }}
+                  >
+                    literature
+                  </Text>
+                </Link>
+                <Link href="/movies">
+                  <Text
+                    size="lg"
+                    sx={{
+                      cursor: "pointer",
+                      letterSpacing: "2px",
+                      color: "whitesmoke",
+                      "&:hover": {
+                        color: "darkgray",
+                      },
+                    }}
+                  >
+                    movies
+                  </Text>
+                </Link>
+                <ColorModeSwitch />
+              </Group>
+            </MediaQuery>
           </div>
         </Header>
       }
     >
-      {children}
+      <Container size="xl">{children}</Container>
     </AppShell>
   )
 }

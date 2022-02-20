@@ -20,9 +20,11 @@ export default function GlobalStyle(): ReactElement {
           minWidth: "100vw",
           minHeight: "100vh",
           backgroundColor:
-            theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
+            theme.colorScheme === "dark" ? theme.colors.dark[7] : "#eef1f5",
           color:
-            theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
+            theme.colorScheme === "dark"
+              ? theme.colors.dark[0]
+              : "lightslategray",
           lineHeight: theme.lineHeight,
         },
 

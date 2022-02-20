@@ -14,20 +14,24 @@ import React, { useEffect, useState } from "react"
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth"
 import GithubLoginButton from "../components/Login/GithubLoginButton"
 import GoogleLoginButton from "../components/Login/GoogleLoginButton"
+import { useAuth } from "../context/AuthContext"
 import { auth } from "../firebase"
 
 export default function Login(): JSX.Element {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [loginError, setLoginError] = useState(null)
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth)
   const notifications = useNotifications()
-
+  const { user: authUser } = useAuth()
   const router = useRouter()
 
   useEffect(() => {
-    console.log(error)
-  }, [error])
+    if (authUser) {
+      router.push("/")
+    }
+  }, [authUser])
 
   return (
     <Container size="xs" style={{ minHeight: "100vh" }}>
@@ -86,14 +90,17 @@ export default function Login(): JSX.Element {
             </Group>
             <Button
               variant="outline"
-              onClick={() => signInWithEmailAndPassword(email, password)}
+              onClick={() => {
+                signInWithEmailAndPassword(email, password)
+              }}
             >
               Submit
             </Button>
             <Group>
-              <GithubLoginButton />
-              <GoogleLoginButton />
+              <GithubLoginButton setError={setLoginError} />
+              <GoogleLoginButton setError={setLoginError} />
             </Group>
+            {loginError && <Text color="red">{loginError}</Text>}
           </SimpleGrid>
         </Group>
       </div>

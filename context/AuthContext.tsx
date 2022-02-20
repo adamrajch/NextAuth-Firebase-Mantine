@@ -4,13 +4,12 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth"
-import { doc, getDoc, onSnapshot } from "firebase/firestore"
+import { doc, onSnapshot } from "firebase/firestore"
 import router from "next/router"
 import nookies from "nookies"
 import { createContext, useContext, useEffect, useState } from "react"
 import { useAuthState } from "react-firebase-hooks/auth"
 import { auth, db } from "../firebase"
-import { createUser } from "../lib/CreateUser"
 // import { createUser } from "../hooks/createUser"
 
 type Props = {
@@ -25,9 +24,9 @@ export function AuthProvider({ children }: Props) {
 export const useAuth = () => useContext(AuthContext)
 
 export function useUserData() {
-  const [authUser, loading, error] = useAuthState(auth)
+  const [authUser, authLoading, error] = useAuthState(auth)
   const [user, setUser] = useState<any>(null)
-
+  const [loading, setLoading] = useState<any>(true)
   useEffect(() => {
     const handle = setInterval(async () => {
       const user = auth.currentUser
@@ -40,47 +39,41 @@ export function useUserData() {
   useEffect(() => {
     async function handleUser() {
       let unsubscribe: any
-
+      if (authLoading) {
+        return
+      }
       if (authUser) {
-        const formattedUser = await formatUser(authUser)
-        const { token, ...userWithoutToken } = formattedUser
-
+        // const formattedUser = await formatUser(authUser)
+        // const { token, ...userWithoutToken } = formattedUser
+        const token = await authUser.getIdToken(true)
         const ref = doc(db, "users", authUser.uid)
-
-        const docSnap = await getDoc(ref)
-        if (docSnap.exists()) {
-          setUser(docSnap.data())
-        } else {
-          console.log(authUser)
-          createUser(authUser.uid, userWithoutToken)
-          setUser(user)
-        }
-
-        unsubscribe = onSnapshot(ref, (doc) => {
-          console.log("sets user, ", doc.data())
-          setUser(doc.data())
-        })
 
         nookies.set(undefined, "token", token, {
           maxAge: 30 * 24 * 60 * 60,
           path: "/",
         })
-        router.push("/")
+
+        unsubscribe = onSnapshot(ref, (doc) => {
+          console.log("sets user, ", doc.data())
+          setUser(doc.data())
+          setLoading(false)
+        })
+
         return unsubscribe
       } else {
         nookies.set(undefined, "token", "", { path: "/" })
-
-        setUser(null)
-        router.push("/login")
+        setUser(false)
       }
 
       return unsubscribe
     }
 
     handleUser()
-
-    return
-  }, [authUser])
+    setLoading(false)
+    return () => {
+      setLoading({})
+    }
+  }, [authUser, authLoading])
 
   const signinWithGoogle = (redirect: any) => {
     return signInWithPopup(auth, new GoogleAuthProvider())
@@ -113,7 +106,7 @@ export function useUserData() {
       .then(() => {
         console.log("sucessfully logged out")
 
-        router.push("/")
+        router.push("/login")
       })
       .catch((error) => {
         console.log(error)
