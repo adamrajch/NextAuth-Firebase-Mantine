@@ -1,10 +1,23 @@
-import { Box, Group } from "@mantine/core"
+import { Box, Group, TextInput } from "@mantine/core"
 import axios from "axios"
-import React, { useEffect, useState } from "react"
+import router from "next/router"
+import React, { useEffect, useRef, useState } from "react"
+import { AiOutlineClose, AiOutlineSearch } from "react-icons/ai"
 import BookSearchContainer from "../../components/BooksSearch/BookSearchContainer"
 export default function BooksHome() {
   const [val, setVal] = useState("harry potter")
   const [books, setBooks] = useState<any>([])
+  const [query, setQuery] = useState<string>("")
+  const searchInputRef = useRef<any>(null)
+
+  const search = (e: any) => {
+    e.preventDefault()
+    const term = searchInputRef.current.value
+
+    if (!term) return
+
+    router.push(`/literature/search?term=${term}`)
+  }
   const uri = `https://www.googleapis.com/books/v1/volumes?q=${val}&key=${process.env.NEXT_PUBLIC_GOOGLE_BOOKS_API_KEY}`
   const url = `https://www.googleapis.com/books/v1/volumes?q=harry%20potter&key=AIzaSyDTl6EyWaIguVvXBXpN_csEm2Uj8f3FU0E`
   useEffect(() => {
@@ -12,9 +25,28 @@ export default function BooksHome() {
       setBooks(data.data.items)
     })
   }, [])
+
   return (
     <div>
-      {/* <Title>Discover the best of all time</Title> */}
+      <form>
+        <TextInput
+          label="Search"
+          icon={<AiOutlineSearch />}
+          value={query}
+          onChange={(e: any) => setQuery(e.currentTarget.value)}
+          rightSection={
+            query.length > 0 ? (
+              <AiOutlineClose
+                onClick={() => setQuery("")}
+                style={{ cursor: "pointer" }}
+              />
+            ) : null
+          }
+          onKeyPress={(e) => e.key == "Enter" && search(e)}
+          ref={searchInputRef}
+        />
+      </form>
+
       <BookSearchContainer books={books} />
       <Group grow>
         <Box component="a"></Box>

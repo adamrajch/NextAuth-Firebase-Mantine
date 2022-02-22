@@ -1,5 +1,4 @@
 import React, { ReactElement } from "react"
-import Layout from "../components/Layout/layout"
 import { Center, Title, Text, Group, Button } from "@mantine/core"
 import { useRouter } from "next/router"
 export default function Custom404() {

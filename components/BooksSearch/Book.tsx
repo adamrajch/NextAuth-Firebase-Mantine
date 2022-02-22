@@ -34,7 +34,9 @@ export default function Book({ id, data }: Props) {
   useEffect(() => {
     hovered ? setOpened(true) : setOpened(false)
   }, [hovered])
-
+  useEffect(() => {
+    modalOpen && setOpened(false)
+  }, [modalOpen])
   const theme = useMantineTheme()
   console.log(data)
   const secondaryColor =
@@ -68,10 +70,14 @@ export default function Book({ id, data }: Props) {
                 }}
               >
                 <Image
-                  src={data.imageLinks.thumbnail}
+                  src={
+                    data.imageLinks?.thumbnail ||
+                    "https://chonjiacademy.com/wp-content/uploads/2017/04/default-image.jpg"
+                  }
                   height={265}
                   width={185}
                   radius="sm"
+                  alt={data.imageLinks?.thumbnail || "no cover"}
                 />
 
                 <ActionIcon
@@ -138,8 +144,8 @@ export default function Book({ id, data }: Props) {
           hideCloseButton={true}
           radius="md"
         >
-          <div
-            style={{
+          <Box
+            sx={(theme) => ({
               position: "relative",
               display: "flex",
               justifyContent: "flex-start",
@@ -147,11 +153,14 @@ export default function Book({ id, data }: Props) {
               backgroundColor: "darkslategray",
               height: 150,
               padding: 16,
-              borderRadius: "9px 9px 0 0",
-            }}
+              borderRadius: "6px 6px 0 0",
+            })}
           >
             <Image
-              src={data.imageLinks.smallThumbnail}
+              src={
+                data.imageLinks?.smallThumbnail ||
+                "https://chonjiacademy.com/wp-content/uploads/2017/04/default-image.jpg"
+              }
               height={125}
               width={85}
               radius="sm"
@@ -160,6 +169,7 @@ export default function Book({ id, data }: Props) {
                 flexGrow: 0,
                 bottom: -20,
               }}
+              alt={data.imageLinks?.smallThumbnail || "no cover"}
             />
 
             <Group
@@ -167,7 +177,7 @@ export default function Book({ id, data }: Props) {
               align="flex-end"
               style={{ flexGrow: 1, marginLeft: 100 }}
             >
-              <Title order={4} style={{ flexGrow: 1 }}>
+              <Title order={4} style={{ flexGrow: 1, color: "whitesmoke" }}>
                 {data.title}
               </Title>
               <Group position="right" style={{ flexGrow: 0 }}>
@@ -177,7 +187,7 @@ export default function Book({ id, data }: Props) {
                 <Button size="xs">Save</Button>
               </Group>
             </Group>
-          </div>
+          </Box>
           <div style={{ padding: 16, marginTop: 20 }}>
             <Grid grow>
               <Grid.Col sm={6} md={4}>

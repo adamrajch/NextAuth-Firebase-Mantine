@@ -26,6 +26,7 @@ export default function GlobalStyle(): ReactElement {
               ? theme.colors.dark[0]
               : "lightslategray",
           lineHeight: theme.lineHeight,
+          overflowX: "hidden",
         },
 
         div: {

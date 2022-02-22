@@ -84,7 +84,7 @@ export default function AppLayout({ children }: Props) {
               </Title>
             </Link>
 
-            <MediaQuery largerThan="sm" styles={{ display: "none" }}>
+            <MediaQuery largerThan="md" styles={{ display: "none" }}>
               <Burger
                 opened={opened}
                 onClick={() => setOpened((o) => !o)}
@@ -94,7 +94,7 @@ export default function AppLayout({ children }: Props) {
               />
             </MediaQuery>
 
-            <MediaQuery smallerThan="lg" styles={{ display: "none" }}>
+            <MediaQuery smallerThan="md" styles={{ display: "none" }}>
               <Group position="right">
                 <Link href="/about">
                   <Text
@@ -141,6 +141,7 @@ export default function AppLayout({ children }: Props) {
                     movies
                   </Text>
                 </Link>
+                <UserButton />
                 <ColorModeSwitch />
               </Group>
             </MediaQuery>
@@ -148,7 +149,9 @@ export default function AppLayout({ children }: Props) {
         </Header>
       }
     >
-      <Container size="xl">{children}</Container>
+      <Container size="xl" style={{ marginBottom: 40 }}>
+        {children}
+      </Container>
     </AppShell>
   )
 }

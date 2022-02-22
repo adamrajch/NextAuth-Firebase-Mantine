@@ -26,8 +26,9 @@ export default function UserButton() {
   return (
     <Menu
       control={
-        <Group style={{ cursor: "pointer" }} position="center" grow>
+        <Group style={{ cursor: "pointer" }} position="center" grow spacing={4}>
           <Avatar
+            size="sm"
             src={user.photoUrl}
             alt="profile"
             radius="xl"
@@ -54,22 +55,7 @@ export default function UserButton() {
       <Menu.Item>Settings</Menu.Item>
 
       <Divider />
-      {/* <Menu.Item color="red" onClick={signout}>
-        <Button
-          leftIcon={
-            <Avatar
-              src={user.photoUrl}
-              alt="profile"
-              radius="xl"
-              color="blue"
-              size="sm"
-            />
-          }
-          variant="outline"
-        >
-          {user.name ?? user.email}
-        </Button>
-      </Menu.Item> */}
+
       <Menu.Item color="red" onClick={signout}>
         Sign out
       </Menu.Item>
