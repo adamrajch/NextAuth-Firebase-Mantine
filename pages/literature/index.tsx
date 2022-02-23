@@ -15,8 +15,14 @@ export default function BooksHome() {
     const term = searchInputRef.current.value
 
     if (!term) return
-
-    router.push(`/literature/search?term=${term}`)
+    router.push({
+      pathname: `/literature/search`,
+      query: {
+        term: term,
+        page: 1,
+      },
+    })
+    // router.push(`/literature/search?term=${term}`)
   }
   const uri = `https://www.googleapis.com/books/v1/volumes?q=${val}&key=${process.env.NEXT_PUBLIC_GOOGLE_BOOKS_API_KEY}`
   const url = `https://www.googleapis.com/books/v1/volumes?q=harry%20potter&key=AIzaSyDTl6EyWaIguVvXBXpN_csEm2Uj8f3FU0E`

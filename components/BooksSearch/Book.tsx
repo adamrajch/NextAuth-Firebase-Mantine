@@ -38,7 +38,7 @@ export default function Book({ id, data }: Props) {
     modalOpen && setOpened(false)
   }, [modalOpen])
   const theme = useMantineTheme()
-  console.log(data)
+
   const secondaryColor =
     theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.colors.gray[7]
   return (
@@ -111,11 +111,11 @@ export default function Book({ id, data }: Props) {
       >
         <Group direction="column" spacing={0}>
           <Text>
-            {data.authors.length > 1 ? "Authors" : "Author"} :{" "}
+            {data.authors?.length > 1 ? "Authors" : "Author"} :{" "}
             {data.authors?.map((a: string, i: number) => (
               <Text component="span">
                 {a}
-                {i === data.authors.length - 1 ? "" : ", "}
+                {i === data.authors?.length - 1 ? "" : ", "}
               </Text>
             ))}
           </Text>
